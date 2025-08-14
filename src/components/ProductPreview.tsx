@@ -6,7 +6,7 @@ const PreviewArea = styled.div`
   background: white;
   border-radius: 1rem;
   padding: 2rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 16px 30px rgba(2, 6, 23, 0.08);
   text-align: center;
   min-height: 400px;
   display: flex;
@@ -16,20 +16,20 @@ const PreviewArea = styled.div`
 `;
 
 const PreviewTitle = styled.h3`
-  color: #374151;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
+  color: #111827;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
 `;
 
 const PreviewFrame = styled.div`
-  width: 300px;
-  height: 300px;
+  width: 320px;
+  height: 320px;
   border: 2px solid #e5e7eb;
   border-radius: 0.75rem;
   position: relative;
   overflow: hidden;
-  background: #f9fafb;
-  margin-bottom: 1rem;
+  background: #f1f5f9;
+  margin-bottom: 0.75rem;
 `;
 
 const BackgroundLayer = styled.div<{ image: string }>`
@@ -77,30 +77,30 @@ const TextLayer = styled.div`
   bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.9);
-  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
-  font-weight: 600;
-  color: #374151;
+  font-weight: 700;
+  color: #111827;
   z-index: 4;
   max-width: 80%;
   word-wrap: break-word;
 `;
 
 const PlaceholderText = styled.p`
-  color: #9ca3af;
-  font-size: 1.1rem;
+  color: #94a3b8;
+  font-size: 1rem;
   margin: 0;
 `;
 
 const PriceDisplay = styled.div`
-  background: #6366f1;
+  background: #111827;
   color: white;
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-  font-weight: 600;
-  font-size: 1.1rem;
-  margin-top: 1rem;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-top: 0.5rem;
 `;
 
 const formatPrice = (price: number): string => {
@@ -118,77 +118,36 @@ const ProductPreview: React.FC = () => {
   if (!hasCustomization) {
     return (
       <PreviewArea>
-        <PreviewTitle>Product Preview</PreviewTitle>
-        <PlaceholderText>Start customizing to see your product here!</PlaceholderText>
+        <PreviewTitle>Live Preview</PreviewTitle>
+        <PreviewFrame>
+          <PlaceholderText>Choose options to see your gift here</PlaceholderText>
+        </PreviewFrame>
+        <PriceDisplay>{formatPrice(total)}</PriceDisplay>
       </PreviewArea>
     );
   }
 
   return (
     <PreviewArea>
-      <PreviewTitle>Your Custom Product</PreviewTitle>
-      
+      <PreviewTitle>Live Preview</PreviewTitle>
       <PreviewFrame>
         {customization.background && (
           <BackgroundLayer image={customization.background.image} />
         )}
-        
         {customization.character && (
           <CharacterLayer image={customization.character.image} />
         )}
-        
-        {customization.hairstyle && (
-          <AccessoryLayer 
-            image={customization.hairstyle.image} 
-            top="30%" 
-            left="50%" 
-          />
-        )}
-        
-        {customization.hat && (
-          <AccessoryLayer 
-            image={customization.hat.image} 
-            top="20%" 
-            left="50%" 
-          />
-        )}
-        
-        {customization.clothes.map((clothing) => (
-          <AccessoryLayer 
-            key={clothing.id}
-            image={clothing.image} 
-            top="50%" 
-            left="50%" 
-          />
+        {customization.accessories.map((acc, index) => (
+          <AccessoryLayer key={acc.id + index} image={acc.image} />
         ))}
-        
-        {customization.accessories.map((accessory) => (
-          <AccessoryLayer 
-            key={accessory.id}
-            image={accessory.image} 
-            top="40%" 
-            left="50%" 
-          />
-        ))}
-        
         {customization.pet && (
-          <AccessoryLayer 
-            image={customization.pet.image} 
-            top="70%" 
-            left="80%" 
-          />
+          <AccessoryLayer image={customization.pet.image} top="70%" left="70%" />
         )}
-        
         {customization.personalText && (
-          <TextLayer>
-            {customization.personalText}
-          </TextLayer>
+          <TextLayer>{customization.personalText}</TextLayer>
         )}
       </PreviewFrame>
-      
-      <PriceDisplay>
-        Total: {formatPrice(total)}
-      </PriceDisplay>
+      <PriceDisplay>{formatPrice(total)}</PriceDisplay>
     </PreviewArea>
   );
 };

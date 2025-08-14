@@ -33,24 +33,27 @@ const OptionsGrid = styled.div`
 `;
 
 const OptionCard = styled.div<{ selected: boolean }>`
-  border: 2px solid ${props => props.selected ? '#6366f1' : '#e5e7eb'};
-  border-radius: 0.5rem;
-  padding: 1rem;
+  border: 2px solid ${props => props.selected ? '#111827' : '#e5e7eb'};
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.75rem 0.875rem 0.75rem;
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: ${props => props.selected ? '#f0f4ff' : 'white'};
+  background: ${props => props.selected ? '#0f172a' : 'white'};
+  color: ${props => props.selected ? 'white' : '#111827'};
+  position: relative;
+  overflow: hidden;
   
   &:hover {
-    border-color: #6366f1;
+    border-color: #111827;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+    box-shadow: 0 8px 18px rgba(2, 6, 23, 0.08);
   }
 `;
 
 const OptionImage = styled.div<{ image: string }>`
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   margin: 0 auto 0.5rem;
   background-image: url(${props => props.image});
   background-size: contain;
@@ -58,59 +61,44 @@ const OptionImage = styled.div<{ image: string }>`
   background-position: center;
 `;
 
-const OptionName = styled.p`
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
-  margin: 0 0 0.25rem 0;
-`;
-
-const OptionPrice = styled.p`
+const PriceBadge = styled.span`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #111827;
+  color: white;
   font-size: 0.75rem;
-  color: #6366f1;
-  font-weight: 600;
-  margin: 0;
-`;
-
-const MultiSelectContainer = styled.div`
-  margin-top: 1rem;
-`;
-
-const MultiSelectTitle = styled.h4`
-  font-size: 1rem;
-  color: #374151;
-  margin-bottom: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  font-weight: 700;
 `;
 
 const SelectedItems = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 1rem;
 `;
 
-const SelectedItem = styled.div`
-  background: #6366f1;
-  color: white;
+const SelectedItem = styled.span`
+  background: #eef2ff;
+  color: #111827;
   padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  border: 1px solid #c7d2fe;
 `;
 
 const RemoveButton = styled.button`
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 0.75rem;
-  padding: 0;
-  
-  &:hover {
-    opacity: 0.8;
-  }
+  margin-left: 0.5rem;
+  background: transparent;
+  color: #ef4444;
+`;
+
+const MultiSelectContainer = styled.div`
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
 `;
 
 const TextInput = styled.input`
@@ -119,7 +107,7 @@ const TextInput = styled.input`
   border: 2px solid #e5e7eb;
   border-radius: 0.5rem;
   font-size: 1rem;
-  margin-top: 0.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
   
   &:focus {
     outline: none;
@@ -130,126 +118,90 @@ const TextInput = styled.input`
 
 const formatPrice = (price: number): string => {
   if (price === 0) return 'Free';
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  }).format(price);
+  return `+$${price}`;
 };
 
 const OptionSelector: React.FC<OptionSelectorProps> = ({ step }) => {
   const { 
     customization, 
-    setCharacter, 
-    setBackground, 
-    addClothing, 
-    removeClothing,
-    setHairstyle, 
-    setHat, 
-    addAccessory, 
-    removeAccessory,
-    setPet, 
-    setPersonalText 
+    setCharacter, setBackground, setHairstyle, setHat, setPet,
+    addClothing, removeClothing, addAccessory, removeAccessory,
+    setPersonalText
   } = useCustomizationStore();
 
-  const isSelected = (type: string, id: string): boolean => {
-    switch (type) {
-      case 'character':
-        return customization.character?.id === id;
-      case 'background':
-        return customization.background?.id === id;
-      case 'hairstyle':
-        return customization.hairstyle?.id === id;
-      case 'hat':
-        return customization.hat?.id === id;
-      case 'pet':
-        return customization.pet?.id === id;
-      default:
-        return false;
-    }
-  };
+  type OptionRenderable = { id: string; name: string; image: string; price: number };
+  const renderOption = (
+    item: OptionRenderable,
+    selected: boolean,
+    onClick: () => void
+  ) => (
+    <OptionCard key={item.id} selected={selected} onClick={onClick}>
+      <PriceBadge>{formatPrice(item.price)}</PriceBadge>
+      <OptionImage image={item.image} />
+      <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>{item.name}</div>
+    </OptionCard>
+  );
 
-  const handleOptionClick = (type: string, item: Character | Background | Hairstyle | Hat | Pet) => {
-    switch (type) {
-      case 'character':
-        setCharacter(item);
-        break;
-      case 'background':
-        setBackground(item);
-        break;
-      case 'hairstyle':
-        setHairstyle(item);
-        break;
-      case 'hat':
-        setHat(item);
-        break;
-      case 'pet':
-        setPet(item);
-        break;
-    }
-  };
+  const renderSingleOptions = (
+    type: 'character' | 'background' | 'hairstyle' | 'hat' | 'pet',
+    items: (Character | Background | Hairstyle | Hat | Pet)[]
+  ) => (
+    <OptionsGrid>
+      {items.map((item) => {
+        const isSelected = 
+          (type === 'character' && customization.character?.id === item.id) ||
+          (type === 'background' && customization.background?.id === item.id) ||
+          (type === 'hairstyle' && customization.hairstyle?.id === item.id) ||
+          (type === 'hat' && customization.hat?.id === item.id) ||
+          (type === 'pet' && customization.pet?.id === item.id);
+        const clickHandler = () => {
+          if (type === 'character') setCharacter(item as Character);
+          if (type === 'background') setBackground(item as Background);
+          if (type === 'hairstyle') setHairstyle(item as Hairstyle);
+          if (type === 'hat') setHat(item as Hat);
+          if (type === 'pet') setPet(item as Pet);
+        };
+        return renderOption(item as OptionRenderable, isSelected, clickHandler);
+      })}
+    </OptionsGrid>
+  );
 
-  const renderSingleOptions = <T extends Character | Background | Hairstyle | Hat | Pet>(
-    type: string, 
-    items: T[]
-  ) => {
-    return (
+  const renderMultiSelectOptions = (
+    type: 'clothes' | 'accessories',
+    items: (Clothing | Accessory)[]
+  ) => (
+    <>
       <OptionsGrid>
-        {items.map((item) => (
-          <OptionCard
-            key={item.id}
-            selected={isSelected(type, item.id)}
-            onClick={() => handleOptionClick(type, item)}
-          >
-            <OptionImage image={item.image} />
-            <OptionName>{item.name}</OptionName>
-            <OptionPrice>{formatPrice(item.price)}</OptionPrice>
-          </OptionCard>
-        ))}
+        {items.map((item) => {
+          const isSelected =
+            (type === 'clothes' && customization.clothes.some(c => c.id === item.id)) ||
+            (type === 'accessories' && customization.accessories.some(a => a.id === item.id));
+          const clickHandler = () => {
+            if (isSelected) {
+              if (type === 'clothes') removeClothing(item.id);
+              if (type === 'accessories') removeAccessory(item.id);
+            } else {
+              if (type === 'clothes') addClothing(item as Clothing);
+              if (type === 'accessories') addAccessory(item as Accessory);
+            }
+          };
+          return renderOption(item as OptionRenderable, isSelected, clickHandler);
+        })}
       </OptionsGrid>
-    );
-  };
-
-  const renderMultiSelectOptions = <T extends Clothing | Accessory>(
-    type: string, 
-    items: T[]
-  ) => {
-    const isClothes = type === 'clothes';
-    const selectedItems = isClothes ? customization.clothes : customization.accessories;
-    const addItem = isClothes ? addClothing : addAccessory;
-    const removeItem = isClothes ? removeClothing : removeAccessory;
-
-    return (
-      <MultiSelectContainer>
-        <MultiSelectTitle>Select {type}</MultiSelectTitle>
-        <OptionsGrid>
-          {items.map((item) => (
-            <OptionCard
-              key={item.id}
-              selected={false}
-              onClick={() => addItem(item)}
+      <SelectedItems>
+        {(type === 'clothes' ? customization.clothes : customization.accessories).map(item => (
+          <SelectedItem key={item.id}>
+            {item.name}
+            <RemoveButton
+              onClick={() => (type === 'clothes' ? removeClothing(item.id) : removeAccessory(item.id))}
             >
-              <OptionImage image={item.image} />
-              <OptionName>{item.name}</OptionName>
-              <OptionPrice>{formatPrice(item.price)}</OptionPrice>
-            </OptionCard>
-          ))}
-        </OptionsGrid>
-        
-        <SelectedItems>
-          {selectedItems.map((item) => (
-            <SelectedItem key={item.id}>
-              {item.name}
-              <RemoveButton
-                onClick={() => removeItem(item.id)}
-              >
-                ×
-              </RemoveButton>
-            </SelectedItem>
-          ))}
-        </SelectedItems>
-      </MultiSelectContainer>
-    );
-  };
+              ×
+            </RemoveButton>
+          </SelectedItem>
+        ))}
+      </SelectedItems>
+    </>
+  );
 
   const renderStep = () => {
     switch (step) {
