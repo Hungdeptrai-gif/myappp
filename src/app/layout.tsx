@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import ThemeProvider from '@/components/ThemeProvider';
 
 export const metadata: Metadata = {
   title: '🎨 Custom Gift Creator - Design Your Perfect Personalized Gift',
@@ -105,7 +106,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {children}
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
