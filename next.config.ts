@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   distDir: 'out',
   images: {
     unoptimized: true
+  },
+  compiler: {
+    styledComponents: true
   }
 };
 
