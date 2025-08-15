@@ -103,11 +103,13 @@ const PriceDisplay = styled.div`
   margin-top: 0.5rem;
 `;
 
+const VND_RATE = 1000;
 const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
-    currency: 'USD'
-  }).format(price);
+    currency: 'VND',
+    maximumFractionDigits: 0
+  }).format(Math.round(price * VND_RATE));
 };
 
 const ProductPreview: React.FC = () => {

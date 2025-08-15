@@ -116,9 +116,11 @@ const TextInput = styled.input`
   }
 `;
 
+const VND_RATE = 1000;
 const formatPrice = (price: number): string => {
-  if (price === 0) return 'Free';
-  return `+$${price}`;
+  if (price === 0) return 'Miễn phí';
+  const vnd = Math.round(price * VND_RATE);
+  return `+${new Intl.NumberFormat('vi-VN').format(vnd)}₫`;
 };
 
 const OptionSelector: React.FC<OptionSelectorProps> = ({ step }) => {
@@ -208,7 +210,7 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({ step }) => {
       case 1:
         return (
           <>
-            <StepTitle>Choose Your Character</StepTitle>
+            <StepTitle>Chọn nhân vật</StepTitle>
             {renderSingleOptions('character', characters)}
           </>
         );
@@ -216,7 +218,7 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({ step }) => {
       case 2:
         return (
           <>
-            <StepTitle>Select Background</StepTitle>
+            <StepTitle>Chọn phông nền</StepTitle>
             {renderSingleOptions('background', backgrounds)}
           </>
         );
@@ -224,7 +226,7 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({ step }) => {
       case 3:
         return (
           <>
-            <StepTitle>Style Your Character</StepTitle>
+            <StepTitle>Trang trí nhân vật</StepTitle>
             {renderSingleOptions('hairstyle', hairstyles)}
             {renderSingleOptions('hat', hats)}
             {renderMultiSelectOptions('clothes', clothes)}
@@ -236,22 +238,28 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({ step }) => {
       case 4:
         return (
           <>
-            <StepTitle>Add Personal Touch</StepTitle>
+            <StepTitle>Thêm lời nhắn</StepTitle>
             <p style={{ marginBottom: '1rem', color: '#6b7280' }}>
-              Add a name or personal message to your gift
+              Thêm tên hoặc lời nhắn cho món quà
             </p>
-            <TextInput
+            <input
               type="text"
-              placeholder="Enter your message here..."
+              placeholder="Nhập lời nhắn..."
               value={customization.personalText}
               onChange={(e) => setPersonalText(e.target.value)}
               maxLength={100}
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                border: '2px solid #e5e7eb',
+                borderRadius: '0.5rem'
+              }}
             />
           </>
         );
       
       default:
-        return <StepTitle>Select Options</StepTitle>;
+        return <StepTitle>Chọn tuỳ chọn</StepTitle>;
     }
   };
 

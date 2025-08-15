@@ -52,11 +52,11 @@ const Hero: React.FC = () => {
   return (
     <Wrap>
       <Inner>
-        <Title>Design personalized gifts they&apos;ll love</Title>
-        <Subtitle>Pick a character, scene, and style. Add your message. Preview in real time.</Subtitle>
+        <Title>Thiết kế quà tặng cá nhân hoá thật dễ dàng</Title>
+        <Subtitle>Chọn nhân vật, bối cảnh, phong cách. Thêm lời nhắn. Xem trước theo thời gian thực.</Subtitle>
         <CTAWrap>
-          <Primary href="#builder">Start Customizing</Primary>
-          <Secondary href="#order">Order Now</Secondary>
+          <Primary href="#builder">Bắt đầu tuỳ chỉnh</Primary>
+          <Secondary href="#order">Đặt hàng ngay</Secondary>
         </CTAWrap>
       </Inner>
     </Wrap>

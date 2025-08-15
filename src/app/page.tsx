@@ -19,11 +19,11 @@ function HomeClient() {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const steps = [
-    { number: 1, title: 'Character', description: 'Choose a base character' },
-    { number: 2, title: 'Background', description: 'Pick a scene' },
-    { number: 3, title: 'Style', description: 'Hair, clothes, accessories, pet' },
-    { number: 4, title: 'Personalize', description: 'Add your message' },
-    { number: 5, title: 'Review & Order', description: 'Enter details and submit' },
+    { number: 1, title: 'Nhân vật', description: 'Chọn nhân vật cơ bản' },
+    { number: 2, title: 'Phông nền', description: 'Chọn bối cảnh' },
+    { number: 3, title: 'Phong cách', description: 'Tóc, quần áo, phụ kiện, thú cưng' },
+    { number: 4, title: 'Cá nhân hoá', description: 'Thêm lời nhắn' },
+    { number: 5, title: 'Xem lại & Đặt hàng', description: 'Nhập thông tin và gửi đơn' },
   ];
 
   return (
@@ -36,8 +36,8 @@ function HomeClient() {
 
       <div id="builder" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem 0 1rem' }}>
         <header style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.75rem', color: '#111827', marginBottom: '0.5rem' }}>Customize your gift</h2>
-          <p style={{ color: '#6b7280' }}>Select options below. Preview updates instantly.</p>
+          <h2 style={{ fontSize: '1.75rem', color: '#111827', marginBottom: '0.5rem' }}>Tuỳ chỉnh món quà của bạn</h2>
+          <p style={{ color: '#6b7280' }}>Chọn các tuỳ chọn bên dưới. Xem trước cập nhật theo thời gian thực.</p>
         </header>
 
         <StepNavigation steps={steps} currentStep={currentStep} />
@@ -66,7 +66,7 @@ function HomeClient() {
                   fontWeight: 600
                 }}
               >
-                Back
+                Quay lại
               </button>
 
               {currentStep < 5 ? (
@@ -80,7 +80,7 @@ function HomeClient() {
                     fontWeight: 600
                   }}
                 >
-                  Next
+                  Tiếp tục
                 </button>
               ) : null}
             </div>

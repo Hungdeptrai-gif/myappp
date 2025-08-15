@@ -67,14 +67,14 @@ const Header: React.FC = () => {
   return (
     <header>
       <Announcement>
-        Free shipping on orders over $100 • 24/7 Support • 100% Satisfaction
+        Miễn phí vận chuyển cho đơn từ 2.000.000₫ • Hỗ trợ 24/7 • Hài lòng 100%
       </Announcement>
       <Nav>
         <NavInner>
           <Brand href="/">The Loving Gifts</Brand>
           <Actions>
-            <GhostBtn href="#builder">Customize</GhostBtn>
-            <ActionBtn href="#order">Order Now</ActionBtn>
+            <GhostBtn href="#builder">Tuỳ chỉnh</GhostBtn>
+            <ActionBtn href="#order">Đặt ngay</ActionBtn>
           </Actions>
         </NavInner>
       </Nav>

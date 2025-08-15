@@ -57,28 +57,28 @@ const Footer: React.FC = () => {
         <Grid>
           <div>
             <ColTitle>The Loving Gifts</ColTitle>
-            <p style={{ color: '#94a3b8' }}>Personalized gifts crafted with love. Fast delivery, premium quality.</p>
+            <p style={{ color: '#94a3b8' }}>Quà tặng cá nhân hoá, giao nhanh, chất lượng cao.</p>
           </div>
           <div>
-            <ColTitle>Shop</ColTitle>
-            <LinkItem href="#builder">Customize</LinkItem>
-            <LinkItem href="#order">Order</LinkItem>
-            <LinkItem href="#faq">FAQ</LinkItem>
+            <ColTitle>Mua sắm</ColTitle>
+            <LinkItem href="#builder">Tuỳ chỉnh</LinkItem>
+            <LinkItem href="#order">Đặt hàng</LinkItem>
+            <LinkItem href="#faq">Câu hỏi thường gặp</LinkItem>
           </div>
           <div>
-            <ColTitle>Company</ColTitle>
-            <LinkItem href="#about">About</LinkItem>
-            <LinkItem href="#contact">Contact</LinkItem>
+            <ColTitle>Công ty</ColTitle>
+            <LinkItem href="#about">Về chúng tôi</LinkItem>
+            <LinkItem href="#contact">Liên hệ</LinkItem>
           </div>
           <div>
-            <ColTitle>Legal</ColTitle>
-            <LinkItem href="#terms">Terms</LinkItem>
-            <LinkItem href="#privacy">Privacy</LinkItem>
+            <ColTitle>Pháp lý</ColTitle>
+            <LinkItem href="#terms">Điều khoản</LinkItem>
+            <LinkItem href="#privacy">Quyền riêng tư</LinkItem>
           </div>
         </Grid>
         <Bottom>
           <span>© {new Date().getFullYear()} The Loving Gifts</span>
-          <span>All rights reserved.</span>
+          <span>Đã đăng ký bản quyền.</span>
         </Bottom>
       </Inner>
     </Wrap>

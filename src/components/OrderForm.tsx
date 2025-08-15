@@ -120,47 +120,21 @@ const DiscountButton = styled.button`
 `;
 
 const DiscountMessage = styled.div<{ type: 'success' | 'error' | 'info' }>`
-  padding: 0.75rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-  
-  background: ${props => {
-    switch (props.type) {
-      case 'success': return '#d1fae5';
-      case 'error': return '#fee2e2';
-      case 'info': return '#dbeafe';
-      default: return '#f3f4f6';
-    }
-  }};
-  
-  color: ${props => {
-    switch (props.type) {
-      case 'success': return '#065f46';
-      case 'error': return '#991b1b';
-      case 'info': return '#1e40af';
-      default: return '#374151';
-    }
-  }};
-  
-  border: 1px solid ${props => {
-    switch (props.type) {
-      case 'success': return '#a7f3d0';
-      case 'error': return '#fecaca';
-      case 'info': return '#bfdbfe';
-      default: return '#e5e7eb';
-    }
-  }};
+  font-size: 0.9rem;
+  color: ${props => props.type === 'error' ? '#991b1b' : props.type === 'success' ? '#065f46' : '#1f2937'};
+  background: ${props => props.type === 'error' ? '#fee2e2' : props.type === 'success' ? '#dcfce7' : '#f3f4f6'};
+  border: 1px solid ${props => props.type === 'error' ? '#fecaca' : props.type === 'success' ? '#bbf7d0' : '#e5e7eb'};
 `;
 
 const ShippingSection = styled.div`
-  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
 `;
 
 const ShippingTitle = styled.h4`
   color: #374151;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
 `;
 
 const ShippingOptions = styled.div`
@@ -170,80 +144,62 @@ const ShippingOptions = styled.div`
 `;
 
 const ShippingOption = styled.label<{ selected: boolean }>`
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.75rem;
   align-items: center;
   padding: 0.75rem;
-  border: 2px solid ${props => props.selected ? '#6366f1' : '#e5e7eb'};
   border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background: ${props => props.selected ? '#f0f4ff' : 'white'};
-  
-  &:hover {
-    border-color: #6366f1;
-  }
+  border: 2px solid ${p => p.selected ? '#111827' : '#e5e7eb'};
+  background: ${p => p.selected ? '#0f172a' : 'white'};
+  color: ${p => p.selected ? 'white' : '#111827'};
 `;
 
 const ShippingRadio = styled.input`
-  margin-right: 0.75rem;
+  accent-color: #111827;
 `;
 
-const ShippingInfo = styled.div`
-  flex: 1;
+const ShippingInfo = styled.div``;
+
+const ShippingName = styled.div`
+  font-weight: 700;
 `;
 
-const ShippingName = styled.span`
-  font-weight: 500;
-  color: #374151;
-  display: block;
-`;
-
-const ShippingDescription = styled.span`
-  font-size: 0.875rem;
+const ShippingDescription = styled.div`
+  font-size: 0.9rem;
   color: #6b7280;
 `;
 
-const ShippingPrice = styled.span`
-  font-weight: 600;
-  color: #6366f1;
+const ShippingPrice = styled.div`
+  font-weight: 700;
 `;
 
 const OrderSummary = styled.div`
-  background: #f9fafb;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+  border-top: 1px dashed #e5e7eb;
+  padding-top: 1rem;
 `;
 
 const SummaryTitle = styled.h4`
-  color: #374151;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
+  color: #111827;
+  margin-bottom: 0.5rem;
 `;
 
 const SummaryRow = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
-  
-  &:last-child {
-    margin-bottom: 0;
-    padding-top: 0.5rem;
-    border-top: 1px solid #e5e7eb;
-    font-weight: 600;
-    font-size: 1.1rem;
-  }
+  margin: 0.25rem 0;
 `;
 
 const SubmitButton = styled.button`
-  width: 100%;
+  margin-top: 1rem;
   background: #10b981;
   color: white;
   border: none;
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   border-radius: 0.5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
   
@@ -257,11 +213,13 @@ const SubmitButton = styled.button`
   }
 `;
 
+const VND_RATE = 1000;
 const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
-    currency: 'USD'
-  }).format(price);
+    currency: 'VND',
+    maximumFractionDigits: 0
+  }).format(Math.round(price * VND_RATE));
 };
 
 const OrderForm: React.FC<OrderFormProps> = ({ onSuccess }) => {
@@ -290,7 +248,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSuccess }) => {
 
   const handleDiscountCode = () => {
     if (!discountCode.trim()) {
-      setDiscountMessage({ type: 'error', text: 'Please enter a discount code' });
+      setDiscountMessage({ type: 'error', text: 'Vui lòng nhập mã giảm giá' });
       return;
     }
 
@@ -299,20 +257,17 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSuccess }) => {
       const discountAmount = calculateDiscount(discountCode, subtotal);
       setDiscountMessage({ 
         type: 'success', 
-        text: `Discount applied! You saved ${formatPrice(discountAmount)}` 
+        text: `Áp dụng mã thành công! Bạn đã tiết kiệm ${formatPrice(discountAmount)}` 
       });
     } else {
-      setDiscountMessage({ type: 'error', text: 'Invalid discount code' });
+      setDiscountMessage({ type: 'error', text: 'Mã giảm giá không hợp lệ' });
     }
   };
 
   const onSubmit = async (data: OrderFormData) => {
     try {
       setFormData(data);
-      
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
       onSuccess();
     } catch (error) {
       console.error('Order submission failed:', error);
@@ -321,61 +276,61 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSuccess }) => {
 
   return (
     <FormGrid>
-      <FormTitle>Complete Your Order</FormTitle>
+      <FormTitle>Hoàn tất đơn hàng</FormTitle>
       
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormSection>
-          <FormLabel htmlFor="name">Full Name *</FormLabel>
+          <FormLabel htmlFor="name">Họ và tên *</FormLabel>
           <FormInput
             id="name"
             {...register('name')}
             className={errors.name ? 'error' : ''}
-            placeholder="Enter your full name"
+            placeholder="Nhập họ và tên"
           />
           {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
         </FormSection>
 
         <FormSection>
-          <FormLabel htmlFor="phone">Phone Number *</FormLabel>
+          <FormLabel htmlFor="phone">Số điện thoại *</FormLabel>
           <FormInput
             id="phone"
             {...register('phone')}
             className={errors.phone ? 'error' : ''}
-            placeholder="Enter your phone number"
+            placeholder="Nhập số điện thoại"
           />
           {errors.phone && <ErrorMessage>{errors.phone.message}</ErrorMessage>}
         </FormSection>
 
         <FormSection>
-          <FormLabel htmlFor="address">Delivery Address *</FormLabel>
+          <FormLabel htmlFor="address">Địa chỉ giao hàng *</FormLabel>
           <FormTextarea
             id="address"
             {...register('address')}
             className={errors.address ? 'error' : ''}
-            placeholder="Enter your complete delivery address"
+            placeholder="Nhập địa chỉ giao hàng đầy đủ"
           />
           {errors.address && <ErrorMessage>{errors.address.message}</ErrorMessage>}
         </FormSection>
 
         <FormSection>
-          <FormLabel htmlFor="note">Special Instructions</FormLabel>
+          <FormLabel htmlFor="note">Ghi chú</FormLabel>
           <FormTextarea
             id="note"
             {...register('note')}
-            placeholder="Any special delivery instructions or notes"
+            placeholder="Ghi chú thêm cho đơn hàng"
           />
         </FormSection>
 
         <FormSection>
-          <FormLabel>Discount Code</FormLabel>
+          <FormLabel>Mã giảm giá</FormLabel>
           <DiscountSection>
             <DiscountInput
               value={discountCode}
               onChange={(e) => setDiscountCode(e.target.value)}
-              placeholder="Enter discount code"
+              placeholder="Nhập mã giảm giá"
             />
             <DiscountButton type="button" onClick={handleDiscountCode}>
-              Apply
+              Áp dụng
             </DiscountButton>
           </DiscountSection>
           {discountMessage && (
@@ -386,7 +341,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSuccess }) => {
         </FormSection>
 
         <ShippingSection>
-          <ShippingTitle>Shipping Options</ShippingTitle>
+          <ShippingTitle>Tuỳ chọn vận chuyển</ShippingTitle>
           <ShippingOptions>
             {shippingOptions.map((option) => (
               <ShippingOption key={option.id} selected={shippingOption.id === option.id}>
@@ -408,29 +363,29 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSuccess }) => {
         </ShippingSection>
 
         <OrderSummary>
-          <SummaryTitle>Order Summary</SummaryTitle>
+          <SummaryTitle>Tóm tắt thanh toán</SummaryTitle>
           <SummaryRow>
-            <span>Subtotal:</span>
+            <span>Tạm tính:</span>
             <span>{formatPrice(subtotal)}</span>
           </SummaryRow>
           {discount > 0 && (
             <SummaryRow>
-              <span>Discount:</span>
+              <span>Giảm giá:</span>
               <span>-{formatPrice(discount)}</span>
             </SummaryRow>
           )}
           <SummaryRow>
-            <span>Shipping:</span>
+            <span>Phí vận chuyển:</span>
             <span>{formatPrice(shipping)}</span>
           </SummaryRow>
           <SummaryRow>
-            <span>Total:</span>
+            <span>Tổng cộng:</span>
             <span>{formatPrice(total)}</span>
           </SummaryRow>
         </OrderSummary>
 
         <SubmitButton type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Processing...' : 'Place Order'}
+          {isSubmitting ? 'Đang xử lý...' : 'Đặt hàng'}
         </SubmitButton>
       </form>
     </FormGrid>

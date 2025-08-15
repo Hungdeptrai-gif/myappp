@@ -43,104 +43,82 @@ const ModalContent = styled.div`
 `;
 
 const SuccessIcon = styled.div`
-  width: 80px;
-  height: 80px;
-  background: #10b981;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.5rem;
-  font-size: 2.5rem;
-  color: white;
+  font-size: 3rem;
+  margin-bottom: 1rem;
 `;
 
 const ModalTitle = styled.h2`
-  color: #374151;
+  color: #111827;
   margin-bottom: 0.5rem;
-  font-size: 1.75rem;
 `;
 
 const ModalSubtitle = styled.p`
   color: #6b7280;
-  margin-bottom: 2rem;
-  font-size: 1.1rem;
+  margin-bottom: 1rem;
 `;
 
 const OrderSummary = styled.div`
   background: #f9fafb;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1rem;
   text-align: left;
+  margin: 1rem 0;
 `;
 
-const SummaryTitle = styled.h4`
-  color: #374151;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-  text-align: center;
+const SummaryTitle = styled.h3`
+  color: #111827;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
 `;
 
 const SummaryTotal = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  font-weight: 600;
-  font-size: 1.1rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid #e5e7eb;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
+  font-weight: 700;
 `;
 
 const CustomizationDetails = styled.div`
-  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
 `;
 
 const DetailItem = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.25rem;
-  font-size: 0.875rem;
-  
-  &:last-child {
-    margin-bottom: 0;
-  }
+  gap: 1rem;
 `;
 
 const SocialSection = styled.div`
-  margin-bottom: 2rem;
+  margin-top: 1rem;
 `;
 
 const SocialTitle = styled.h4`
-  color: #374151;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
+  color: #111827;
+  margin-bottom: 0.5rem;
 `;
 
 const SocialButtons = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   justify-content: center;
-  flex-wrap: wrap;
 `;
 
 const SocialButton = styled.a`
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
-  text-decoration: none;
-  font-weight: 500;
-  transition: transform 0.2s ease;
-  
-  &:hover {
-    transform: translateY(-2px);
-  }
+  font-weight: 600;
 `;
 
 const ZaloButton = styled(SocialButton)`
-  background: #0068ff;
+  background: #0a7cff;
   color: white;
 `;
 
@@ -150,31 +128,35 @@ const FacebookButton = styled(SocialButton)`
 `;
 
 const InstagramButton = styled(SocialButton)`
-  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  background: #e1306c;
   color: white;
 `;
 
 const ContactInfo = styled.div`
-  margin-bottom: 2rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  text-align: left;
+  margin-top: 1rem;
 `;
 
 const ContactTitle = styled.h4`
-  color: #374151;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
+  color: #111827;
+  margin-bottom: 0.5rem;
 `;
 
 const ContactText = styled.p`
-  color: #6b7280;
-  margin: 0.5rem 0;
-  font-size: 0.875rem;
+  color: #374151;
+  margin: 0.25rem 0;
 `;
 
 const CloseButton = styled.button`
+  margin-top: 1rem;
   background: #6366f1;
   color: white;
   border: none;
-  padding: 0.75rem 2rem;
+  padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   font-size: 1rem;
   font-weight: 500;
@@ -186,11 +168,13 @@ const CloseButton = styled.button`
   }
 `;
 
+const VND_RATE = 1000;
 const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
-    currency: 'USD'
-  }).format(price);
+    currency: 'VND',
+    maximumFractionDigits: 0
+  }).format(Math.round(price * VND_RATE));
 };
 
 const SuccessModal: React.FC<SuccessModalProps> = ({ onClose }) => {
@@ -201,80 +185,80 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ onClose }) => {
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <SuccessIcon>🎉</SuccessIcon>
         
-        <ModalTitle>Order Submitted Successfully!</ModalTitle>
+        <ModalTitle>Đặt hàng thành công!</ModalTitle>
         <ModalSubtitle>
-          Thank you for your order. We&apos;ll start processing it right away!
+          Cảm ơn bạn. Chúng tôi sẽ xử lý đơn hàng ngay lập tức!
         </ModalSubtitle>
         
         <OrderSummary>
-          <SummaryTitle>Order Summary</SummaryTitle>
+          <SummaryTitle>Tóm tắt đơn hàng</SummaryTitle>
           
           <CustomizationDetails>
             {customization.character && (
               <DetailItem>
-                <span>Character:</span>
+                <span>Nhân vật:</span>
                 <span>{customization.character.name}</span>
               </DetailItem>
             )}
             
             {customization.background && (
               <DetailItem>
-                <span>Background:</span>
+                <span>Phông nền:</span>
                 <span>{customization.background.name}</span>
               </DetailItem>
             )}
             
             {customization.hairstyle && (
               <DetailItem>
-                <span>Hairstyle:</span>
+                <span>Kiểu tóc:</span>
                 <span>{customization.hairstyle.name}</span>
               </DetailItem>
             )}
             
             {customization.hat && (
               <DetailItem>
-                <span>Hat:</span>
+                <span>Mũ:</span>
                 <span>{customization.hat.name}</span>
               </DetailItem>
             )}
             
             {customization.clothes.length > 0 && (
               <DetailItem>
-                <span>Clothes:</span>
+                <span>Quần áo:</span>
                 <span>{customization.clothes.map(c => c.name).join(', ')}</span>
               </DetailItem>
             )}
             
             {customization.accessories.length > 0 && (
               <DetailItem>
-                <span>Accessories:</span>
+                <span>Phụ kiện:</span>
                 <span>{customization.accessories.map(a => a.name).join(', ')}</span>
               </DetailItem>
             )}
             
             {customization.pet && (
               <DetailItem>
-                <span>Pet:</span>
+                <span>Thú cưng:</span>
                 <span>{customization.pet.name}</span>
               </DetailItem>
             )}
             
             {customization.personalText && (
               <DetailItem>
-                <span>Personal Text:</span>
+                <span>Lời nhắn:</span>
                 <span>{customization.personalText}</span>
               </DetailItem>
             )}
           </CustomizationDetails>
           
           <SummaryTotal>
-            <span>Total:</span>
+            <span>Tổng cộng:</span>
             <span>{formatPrice(total)}</span>
           </SummaryTotal>
         </OrderSummary>
         
         <SocialSection>
-          <SocialTitle>Follow Us & Get Updates</SocialTitle>
+          <SocialTitle>Theo dõi chúng tôi</SocialTitle>
           <SocialButtons>
             <ZaloButton href="https://zalo.me/your-zalo-id" target="_blank" rel="noopener noreferrer">
               📱 Zalo
@@ -289,14 +273,14 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ onClose }) => {
         </SocialSection>
         
         <ContactInfo>
-          <ContactTitle>Need Help?</ContactTitle>
+          <ContactTitle>Cần hỗ trợ?</ContactTitle>
           <ContactText>📧 Email: support@theluvingifts.com</ContactText>
-          <ContactText>📞 Phone: +84 123 456 789</ContactText>
-          <ContactText>⏰ Hours: Mon-Fri 9AM-6PM (GMT+7)</ContactText>
+          <ContactText>📞 Điện thoại: +84 123 456 789</ContactText>
+          <ContactText>⏰ Thời gian: Thứ 2 - Thứ 6, 9:00 - 18:00 (GMT+7)</ContactText>
         </ContactInfo>
         
         <CloseButton onClick={onClose}>
-          Close
+          Đóng
         </CloseButton>
       </ModalContent>
     </ModalOverlay>
